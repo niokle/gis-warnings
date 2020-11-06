@@ -9,12 +9,13 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -23,24 +24,26 @@ public class UrlContentToSetService {
     @Autowired
     private Config config;
 
-    public Set<Info> getInfoList(String url) {
-        Set<Info> result = new HashSet<>();
+    public List<Info> getInfoList(String url) {
+        Set<Info> resultSet = new HashSet<>();
+        List<Info> resultList = new ArrayList<>();
         int resultSize = 0;
         int pageNo = 0;
         String date = "";
         String desc = "";
         String link = "";
         do {
-            resultSize = result.size();
+            resultSize = resultSet.size();
             pageNo++;
             for (Element element : getContentElements(url + "?page=" + pageNo)) {
                 date = element.select("span.date").text().isEmpty() ? "brak" : element.select("span.date").text();
                 desc = element.text();
                 link = config.getBaseUrl() + element.attr("href");
-                result.add(new Info(date, desc, link));
+                resultSet.add(new Info(date, desc, link));
+                resultList.add(new Info(date, desc, link));
             }
-        } while (resultSize != result.size());
-        return result;
+        } while (resultSize != resultSet.size());
+        return resultList;
     }
 
     private Elements getContentElements(String url) {

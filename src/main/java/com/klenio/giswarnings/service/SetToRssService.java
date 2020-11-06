@@ -6,17 +6,15 @@ import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedOutput;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
-
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Component
 @NoArgsConstructor
 public class SetToRssService {
-    public String getXML(Set<Info> set) throws IOException, FeedException {
+    public String getXML(List<Info> list) throws IOException, FeedException {
         SyndFeed feed = new SyndFeedImpl();
         feed.setFeedType("rss_2.0");
         feed.setTitle("Ostrzeżenia GIS");
@@ -26,7 +24,7 @@ public class SetToRssService {
         List entries = new ArrayList();
         feed.setEntries(entries);
 
-        for (Info info : set) {
+        for (Info info : list) {
             SyndEntry entry = new SyndEntryImpl();
             entry.setTitle(info.getDescription());
             entry.setLink(info.getLink());
