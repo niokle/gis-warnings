@@ -4,6 +4,8 @@ import com.klenio.giswarnings.domain.Info;
 import com.rometools.rome.feed.synd.*;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedOutput;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -11,13 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+@Component
+@NoArgsConstructor
 public class SetToRssService {
     public String getXML(Set<Info> set) throws IOException, FeedException {
         SyndFeed feed = new SyndFeedImpl();
         feed.setFeedType("rss_2.0");
-        feed.setTitle("gis warnings feed");
-        feed.setLink("http://example.com/");
-        feed.setDescription("cos tam");
+        feed.setTitle("Ostrzeżenia GIS");
+        feed.setLink("https://www.gov.pl/web/gis/ostrzezenia");
+        feed.setDescription("Ostrzeżenia Głównego Inspektora Sanitarnego, np. wycofanie produktów szkodliwych dla zdrowia");
 
         List entries = new ArrayList();
         feed.setEntries(entries);
@@ -26,10 +30,10 @@ public class SetToRssService {
             SyndEntry entry = new SyndEntryImpl();
             entry.setTitle(info.getDescription());
             entry.setLink(info.getLink());
-            //SyndContent description = new SyndContentImpl();
-            //description.setType("text/plain");
-            //description.setValue("There is text in here.");
-            //entry.setDescription(description);
+            SyndContent description = new SyndContentImpl();
+            description.setType("text/plain");
+            description.setValue(info.getLink());
+            entry.setDescription(description);
             entries.add(entry);
         }
 
