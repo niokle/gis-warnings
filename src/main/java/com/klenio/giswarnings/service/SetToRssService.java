@@ -8,13 +8,15 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 @NoArgsConstructor
 public class SetToRssService {
-    public String getXML(List<Info> list) throws IOException, FeedException {
+    public String getXML(List<Info> list) throws IOException, FeedException, ParseException {
         SyndFeed feed = new SyndFeedImpl();
         feed.setFeedType("rss_2.0");
         feed.setTitle("Ostrzeżenia GIS");
@@ -32,6 +34,7 @@ public class SetToRssService {
             description.setType("text/plain");
             description.setValue(info.getLink());
             entry.setDescription(description);
+            entry.setPublishedDate(new SimpleDateFormat("dd.MM.yyyy").parse(info.getDate()));
             entries.add(entry);
         }
 

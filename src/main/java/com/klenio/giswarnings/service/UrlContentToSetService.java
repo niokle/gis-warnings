@@ -36,7 +36,7 @@ public class UrlContentToSetService {
             resultSize = resultSet.size();
             pageNo++;
             for (Element element : getContentElements(url + "?page=" + pageNo)) {
-                date = element.select("span.date").text().isEmpty() ? "brak" : element.select("span.date").text();
+                date = element.select("span.date").text().isEmpty() ? "01.01.0001" : element.select("span.date").text();
                 desc = element.text();
                 link = config.getBaseUrl() + element.attr("href");
                 resultSet.add(new Info(date, desc, link));

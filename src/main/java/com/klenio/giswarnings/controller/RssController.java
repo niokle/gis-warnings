@@ -7,6 +7,7 @@ import com.rometools.rome.io.FeedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
+import java.text.ParseException;
 
 @RestController
 @RequestMapping("/v1")
@@ -22,7 +23,7 @@ public class RssController {
 
     @GetMapping("/rss")
     @ResponseBody
-    public String getRss() throws IOException, FeedException {
+    public String getRss() throws IOException, FeedException, ParseException {
            return setToRssService.getXML(urlContentToSetService.getInfoList(config.getBaseUrl() + "/web/gis/ostrzezenia"));
       }
 }
